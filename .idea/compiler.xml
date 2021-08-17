@@ -16,6 +16,7 @@
         <module name="changgou_eureka" />
         <module name="changgou_service_goods_api" />
         <module name="changgou_gateway_system" />
+        <module name="changgou_canal" />
         <module name="changgou_service_goods" />
         <module name="changgou_service_system_api" />
       </profile>
@@ -23,6 +24,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="changgou_canal" options="-parameters" />
       <module name="changgou_common" options="-parameters" />
       <module name="changgou_common_db" options="-parameters" />
       <module name="changgou_eureka" options="-parameters" />

@@ -19,6 +19,7 @@
         <module>changgou_common_db</module>
         <module>changgou_service_api</module>
         <module>changgou_service_file</module>
+        <module>changgou_canal</module>
     </modules>
 
     <properties>

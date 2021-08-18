@@ -19,7 +19,9 @@
         <module name="changgou_service_goods_api" />
         <module name="changgou_gateway_system" />
         <module name="changgou_canal" />
+        <module name="changgou_service_search" />
         <module name="changgou_service_goods" />
+        <module name="changgou_service_search_api" />
       </profile>
     </annotationProcessing>
   </component>
@@ -37,6 +39,8 @@
       <module name="changgou_service_file" options="-parameters" />
       <module name="changgou_service_goods" options="-parameters" />
       <module name="changgou_service_goods_api" options="-parameters" />
+      <module name="changgou_service_search" options="-parameters" />
+      <module name="changgou_service_search_api" options="-parameters" />
       <module name="changgou_service_system" options="-parameters" />
       <module name="changgou_service_system_api" options="-parameters" />
       <module name="changgou_transaction_fescar" options="-parameters" />

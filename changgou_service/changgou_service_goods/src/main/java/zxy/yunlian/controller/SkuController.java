@@ -7,6 +7,8 @@ import zxy.yunlian.pojo.Sku;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @RestController
@@ -17,6 +19,19 @@ public class SkuController {
 
     @Autowired
     private SkuService skuService;
+
+    @GetMapping("/spu/{spuId}")
+    public List<Sku> findSkuListBySpuId(@PathVariable("spuId") String spuId){
+        Map<String,Object> searchMap = new HashMap<>();
+
+        if (!"all".equals(spuId)){
+            searchMap.put("spuId",spuId);
+        }
+        searchMap.put("status","1");
+        List<Sku> skuList = skuService.findList(searchMap);
+
+        return skuList;
+    }
 
     /**
      * 查询全部数据

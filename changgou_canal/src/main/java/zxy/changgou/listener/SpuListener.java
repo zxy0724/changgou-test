@@ -24,8 +24,13 @@ public class SpuListener {
         rowData.getBeforeColumnsList().forEach((c)->newData.put(c.getName(),c.getValue()));
 
         //获取最新上架的商品0->1
-        if ("0".equals(oldData.get("is_marketable"))&&"1".equals(newData.get("is_marketable"))){
-            rabbitTemplate.convertAndSend(RabbitMQConfig.GOODS_UP_EXCHANGE,"",newData.get("id"));
+//        if ("0".equals(oldData.get("is_marketable"))&&"1".equals(newData.get("is_marketable"))){
+//            rabbitTemplate.convertAndSend(RabbitMQConfig.GOODS_UP_EXCHANGE,"",newData.get("id"));
+//        }
+        //获取最新下架的商品 1->0
+        if ("1".equals(oldData.get("is_marketable")) && "0".equals(newData.get("is_marketable"))){
+            //将商品的spuid发送到mq
+            rabbitTemplate.convertAndSend(RabbitMQConfig.GOODS_DOWN_EXCHANGE,"",newData.get("id"));
         }
     }
 }

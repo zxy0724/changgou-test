@@ -7,6 +7,9 @@ import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -20,6 +23,7 @@ import zxy.changgou.pojo.SkuInfo;
 import zxy.changgou.service.SearchService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -43,14 +47,45 @@ public class SearchServiceImpl implements SearchService {
         if (paramMap != null) {
             //keywords的参数值不为空
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //关键字
             if (!StringUtils.isEmpty(paramMap.get("keywords"))) {
                 //name:表示按照name域进行查询
                 //matchQuery
                 boolQueryBuilder.must(QueryBuilders.matchQuery("name", paramMap.get("keywords")).operator(Operator.AND));
             }
+            //品牌条件
+            if (!StringUtils.isEmpty(paramMap.get("brand"))) {
+                //name:表示按照name域进行查询
+                //matchQuery
+                boolQueryBuilder.must(QueryBuilders.matchQuery("brandName", paramMap.get("brand")).operator(Operator.AND));
+
+            }
+            //条件 规格
+            for (String key : paramMap.keySet()) {
+                if (key.startsWith("spec_")) {
+                    String value = paramMap.get(key).replace("%2B", "+");
+                    boolQueryBuilder.filter(QueryBuilders.termQuery("specMap." + key.substring(5) + ".keyword", value));
+                }
+            }
+            //条件 价格
+            if (StringUtils.isEmpty(paramMap.get("price"))) {
+                String[] p = paramMap.get("price").split("-");
+                if (p.length == 2) {
+                    boolQueryBuilder.filter(QueryBuilders.rangeQuery("price").lte(p[1]));
+                }
+                boolQueryBuilder.filter(QueryBuilders.rangeQuery("price").lte(p[0]));
+            }
             //原生搜索实现类
             NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
             nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
+//            //品牌分组查询
+//            String skuBrand = "skuBrand";
+//            nativeSearchQueryBuilder.addAggregation(AggregationBuilders.terms(skuBrand).field("brandName"));
+//
+//            //规格分组查询
+//            String skuSpec = "skuSpec";
+//            nativeSearchQueryBuilder.addAggregation(AggregationBuilders.terms(skuSpec).field("spec.keyword"));
+
             //执行查询，返回结果对象
             /**
              *  第一个参数:条件构建对象
@@ -78,9 +113,20 @@ public class SearchServiceImpl implements SearchService {
             resultMap.put("totalPages", aggregatedPage.getTotalPages());
             //查询结果合集
             resultMap.put("rows", aggregatedPage.getContent());
+//            //获取品牌分组结果
+//            StringTerms brandTerms= (StringTerms)aggregatedPage.getAggregation(skuBrand);
+//            List<String> brandList = brandTerms.getBuckets().stream().map(bucket -> bucket.getKeyAsString()).collect(Collectors.toList());
+//            resultMap.put("brandList",brandList);
+//
+//            //获取规格分组结果
+//            StringTerms specTerms= (StringTerms)aggregatedPage.getAggregation(skuSpec);
+//            List<String> specList = brandTerms.getBuckets().stream().map(bucket -> bucket.getKeyAsString()).collect(Collectors.toList());
+//            resultMap.put("specList",specList);
+
+            return resultMap;
         }
 
-        return resultMap;
+        return null;
     }
 
     //处理规格合集 源码中的方法为formartSpec
@@ -101,8 +147,7 @@ public class SearchServiceImpl implements SearchService {
                     specMap.put(key, specValues);
                 }
             }
-
         }
-        return specMap;
+        return null;
     }
 }

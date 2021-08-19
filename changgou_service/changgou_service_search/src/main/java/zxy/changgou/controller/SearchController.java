@@ -43,4 +43,9 @@ public class SearchController {
         Map resultMap = searchService.search(paramMap);
         return resultMap;
     }
+
+    //搜索页面   http://localhost:9009/search/list?keywords=手机&brand=三星&spec_颜色=粉色&
+    //入参：Map
+    //返回值 Map
+    //由于页面是thymeleaf 完成的 属于服务器内页面渲染 跳转页面
 }

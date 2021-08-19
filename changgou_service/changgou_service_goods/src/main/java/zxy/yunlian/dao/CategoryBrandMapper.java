@@ -1,7 +1,8 @@
 package zxy.yunlian.dao;
 
-import tk.mybatis.mapper.common.Mapper;
 import zxy.yunlian.pojo.CategoryBrand;
-
+import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.common.Mapper;
+@Repository
 public interface CategoryBrandMapper extends Mapper<CategoryBrand> {
 }

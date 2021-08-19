@@ -1,8 +1,8 @@
 package zxy.yunlian.service;
 
-
-import com.github.pagehelper.Page;
 import zxy.yunlian.pojo.Sku;
+import com.github.pagehelper.Page;
+
 
 import java.util.List;
 import java.util.Map;
@@ -66,5 +66,7 @@ public interface SkuService {
 
 
 
+    //回滚库存(增加库存并扣减销量)
+    void resumeStockNum(String skuId, Integer num);
 
 }

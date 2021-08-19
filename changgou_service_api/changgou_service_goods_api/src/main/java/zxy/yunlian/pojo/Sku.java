@@ -6,17 +6,12 @@ import java.io.Serializable;
 
 /**
  * sku实体类
- * @author 黑马架构师2.5
  *
  */
 @Table(name="tb_sku")
 public class Sku implements Serializable {
-
 	@Id
 	private String id;//商品id
-
-
-	
 	private String sn;//商品条码
 	private String name;//SKU名称
 	private Integer price;//价格（分）
@@ -35,8 +30,6 @@ public class Sku implements Serializable {
 	private Integer saleNum;//销量
 	private Integer commentNum;//评论数
 	private String status;//商品状态 1-正常，2-下架，3-删除
-
-	
 	public String getId() {
 		return id;
 	}

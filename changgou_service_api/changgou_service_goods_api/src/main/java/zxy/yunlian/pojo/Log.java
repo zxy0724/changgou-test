@@ -6,17 +6,12 @@ import java.io.Serializable;
 
 /**
  * log实体类
- * @author 黑马架构师2.5
  *
  */
 @Table(name="undo_log")
 public class Log implements Serializable {
-
 	@Id
 	private Long id;//id
-
-
-	
 	private Long branchId;//branch_id
 	private String xid;//xid
 	private byte[] rollbackInfo;//rollback_info

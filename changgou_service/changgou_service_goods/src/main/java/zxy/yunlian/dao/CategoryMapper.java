@@ -1,9 +1,9 @@
 package zxy.yunlian.dao;
 
-
-import tk.mybatis.mapper.common.Mapper;
 import zxy.yunlian.pojo.Category;
-
+import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.common.Mapper;
+@Repository
 public interface CategoryMapper extends Mapper<Category> {
 
 }

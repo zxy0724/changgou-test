@@ -6,17 +6,12 @@ import java.io.Serializable;
 
 /**
  * spu实体类
- * @author 黑马架构师2.5
  *
  */
 @Table(name="tb_spu")
 public class Spu implements Serializable {
-
 	@Id
 	private String id;//主键
-
-
-	
 	private String sn;//货号
 	private String name;//SPU名
 	private String caption;//副标题
@@ -34,12 +29,10 @@ public class Spu implements Serializable {
 	private String paraItems;//参数列表
 	private Integer saleNum;//销量
 	private Integer commentNum;//评论数
-	private String isMarketable;//是否上架
+	private String isMarketable;//是否上架 0:下架   1:上架
 	private String isEnableSpec;//是否启用规格
-	private String isDelete;//是否删除
-	private String status;//审核状态
-
-	
+	private String isDelete;//是否删除 0:未删除 1:删除
+	private String status;//审核状态 0:未审核   1:已经审核
 	public String getId() {
 		return id;
 	}

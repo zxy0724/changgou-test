@@ -6,13 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import zxy.yunlian.pojo.Spu;
 
-import java.util.List;
-
 @FeignClient(name = "goods")
 public interface SpuFeign {
-    /***
-     *
-     */
-    @GetMapping("/spu/findSpuById/{Id}")
+
+    @GetMapping("/spu/findSpuById/{id}")
     public Result<Spu> findSpuById(@PathVariable("id") String id);
 }

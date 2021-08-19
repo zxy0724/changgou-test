@@ -6,17 +6,12 @@ import java.io.Serializable;
 
 /**
  * pref实体类
- * @author 黑马架构师2.5
  *
  */
 @Table(name="tb_pref")
 public class Pref implements Serializable {
-
 	@Id
 	private Integer id;//ID
-
-
-	
 	private Integer cateId;//分类ID
 	private Integer buyMoney;//消费金额
 	private Integer preMoney;//优惠金额
@@ -24,15 +19,12 @@ public class Pref implements Serializable {
 	private java.util.Date endTime;//活动截至日期
 	private String type;//类型
 	private String state;//状态
-
-	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 	public Integer getCateId() {
 		return cateId;
 	}

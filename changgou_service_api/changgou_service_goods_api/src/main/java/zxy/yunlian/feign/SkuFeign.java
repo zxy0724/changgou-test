@@ -9,9 +9,6 @@ import java.util.List;
 
 @FeignClient(name = "goods")
 public interface SkuFeign {
-    /***
-     *
-     */
     @GetMapping("/sku/spu/{spuId}")
     public List<Sku> findSkuListBySpuId(@PathVariable("spuId") String spuId);
 }

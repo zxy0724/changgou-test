@@ -3,11 +3,9 @@ package zxy.yunlian.pojo;
 import java.util.List;
 
 public class Goods {
-
     //spu
     private Spu spu;
-
-    //sku集合
+    //sku
     private List<Sku> skuList;
 
     public Spu getSpu() {

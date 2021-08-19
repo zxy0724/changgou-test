@@ -7,45 +7,38 @@ import java.util.List;
 import java.util.Map;
 
 public interface BrandService {
-
-    /***
-     * 查询所有
+    /**
+     * 查询所有品牌
      * @return
      */
-    List<Brand> findAll();
-
+    public List<Brand> findAll();
     /**
      * 根据ID查询
      * @param id
      * @return
      */
-    Brand findById(Integer id);
-
+    public Brand findById(Integer id);
     /***
-     * 新增
+     * 新增品牌
      * @param brand
      */
-    void add(Brand brand);
-
+    public void add(Brand brand);
     /***
-     * 修改
+     * 修改品牌数据
      * @param brand
      */
-    void update(Brand brand);
-
+    public void update(Brand brand);
     /***
-     * 删除
+     * 删除品牌
      * @param id
      */
-    void delete(Integer id);
-
+    public void delete(Integer id);
     /***
-     * 多条件搜索
+     * 多条件搜索品牌方法
      * @param searchMap
      * @return
      */
-    List<Brand> findList(Map<String, Object> searchMap);
-
+    public List<Brand> findList(Map<String,Object>searchMap);
     /***
      * 分页查询
      * @param page
@@ -53,7 +46,6 @@ public interface BrandService {
      * @return
      */
     Page<Brand> findPage(int page, int size);
-
     /***
      * 多条件分页查询
      * @param searchMap
@@ -61,14 +53,11 @@ public interface BrandService {
      * @param size
      * @return
      */
-    Page<Brand> findPage(Map<String, Object> searchMap, int page, int size);
-
+    Page<Brand> findPage(Map<String,Object>searchMap,int page,int size);
     /**
-     * 根据分类名称查询品牌列表
+     * 根据分类名称来查询品牌的名称和图片
      * @param categoryName
      * @return
      */
     public List<Map> findBrandListByCategoryName(String categoryName);
-
-
 }

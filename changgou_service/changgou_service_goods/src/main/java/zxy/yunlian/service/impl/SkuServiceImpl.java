@@ -1,14 +1,16 @@
 package zxy.yunlian.service.impl;
 
+import zxy.yunlian.dao.SkuMapper;
+import zxy.yunlian.service.SkuService;
+import zxy.yunlian.pojo.Sku;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-import zxy.yunlian.dao.SkuMapper;
-import zxy.yunlian.pojo.Sku;
-import zxy.yunlian.service.SkuService;
 
 import java.util.List;
 import java.util.Map;
@@ -103,6 +105,12 @@ public class SkuServiceImpl implements SkuService {
         PageHelper.startPage(page,size);
         Example example = createExample(searchMap);
         return (Page<Sku>)skuMapper.selectByExample(example);
+    }
+
+    @Override
+    @Transactional
+    public void resumeStockNum(String skuId, Integer num) {
+        skuMapper.resumeStockNum(skuId,num);
     }
 
     /**

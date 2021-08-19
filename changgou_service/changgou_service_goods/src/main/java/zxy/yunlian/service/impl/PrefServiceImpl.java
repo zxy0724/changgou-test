@@ -1,14 +1,13 @@
 package zxy.yunlian.service.impl;
 
-
+import zxy.yunlian.dao.PrefMapper;
+import zxy.yunlian.service.PrefService;
+import zxy.yunlian.pojo.Pref;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
-import zxy.yunlian.dao.PrefMapper;
-import zxy.yunlian.pojo.Pref;
-import zxy.yunlian.service.PrefService;
 
 import java.util.List;
 import java.util.Map;

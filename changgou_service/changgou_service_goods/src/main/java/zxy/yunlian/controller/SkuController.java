@@ -1,9 +1,10 @@
 package zxy.yunlian.controller;
+
 import com.changgou.entity.PageResult;
 import com.changgou.entity.Result;
 import com.changgou.entity.StatusCode;
-import zxy.yunlian.service.SkuService;
 import zxy.yunlian.pojo.Sku;
+import zxy.yunlian.service.SkuService;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,28 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/sku")
 public class SkuController {
-
-
     @Autowired
     private SkuService skuService;
-
-    @GetMapping("/spu/{spuId}")
-    public List<Sku> findSkuListBySpuId(@PathVariable("spuId") String spuId){
-        Map<String,Object> searchMap = new HashMap<>();
-
-        if (!"all".equals(spuId)){
-            searchMap.put("spuId",spuId);
-        }
-        searchMap.put("status","1");
-        List<Sku> skuList = skuService.findList(searchMap);
-
-        return skuList;
-    }
-
     /**
      * 查询全部数据
      * @return
@@ -115,8 +101,29 @@ public class SkuController {
     public Result findPage(@RequestParam Map searchMap, @PathVariable  int page, @PathVariable  int size){
         Page<Sku> pageList = skuService.findPage(searchMap, page, size);
         PageResult pageResult=new PageResult(pageList.getTotal(),pageList.getResult());
-        return new Result(true,StatusCode.OK,"查询成功",pageResult);
+        return new Result(true, StatusCode.OK,"查询成功",pageResult);
     }
+    @GetMapping("/spu/{spuId}")
+    public List<Sku> findSkuListBySpuId(@PathVariable("spuId") String spuId){
+        Map<String,Object> searchMap = new HashMap<>();
 
+        if (!"all".equals(spuId)){
+            searchMap.put("spuId",spuId);
+        }
+        //设置审核状态为1（审核通过）
+        searchMap.put("status","1");
+        List<Sku> skuList = skuService.findList(searchMap);
 
+        return skuList;
+    }
+    @PostMapping("/decr/count")
+    public Result decrCount(@RequestParam("username") String username){
+        skuService.decrCount(username);
+        return new Result(true,StatusCode.OK,"库存扣减成功");
+    }
+    @RequestMapping("/resumeStockNum")
+    public Result resumeStockNum(@RequestParam("skuId") String skuId,@RequestParam("num")Integer num){
+        skuService.resumeStockNum(skuId,num);
+        return new Result(true,StatusCode.OK,"回滚库存成功");
+    }
 }

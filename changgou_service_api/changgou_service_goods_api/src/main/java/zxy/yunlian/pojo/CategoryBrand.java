@@ -3,13 +3,14 @@ package zxy.yunlian.pojo;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 中间表
+ */
 @Table(name = "tb_category_brand")
 public class CategoryBrand {
-
     //分类id
     @Id
     private Integer categoryId;
-
     //品牌id
     @Id
     private Integer brandId;

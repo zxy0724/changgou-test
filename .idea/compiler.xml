@@ -10,6 +10,7 @@
         <module name="changgou_service_page" />
         <module name="changgou_common_db" />
         <module name="changgou_eureka" />
+        <module name="changgou_user_oauth" />
         <module name="changgou_service_system_api" />
         <module name="changgou_service_business" />
         <module name="changgou_transaction_fescar" />
@@ -25,6 +26,9 @@
         <module name="changgou_service_search_api" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="changgou_service_user_api" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -45,7 +49,9 @@
       <module name="changgou_service_search_api" options="-parameters" />
       <module name="changgou_service_system" options="-parameters" />
       <module name="changgou_service_system_api" options="-parameters" />
+      <module name="changgou_service_user_api" options="-parameters" />
       <module name="changgou_transaction_fescar" options="-parameters" />
+      <module name="changgou_user_oauth" options="-parameters" />
       <module name="changgou_web" options="-parameters" />
     </option>
   </component>

@@ -20,6 +20,8 @@
         <module>changgou_service_api</module>
         <module>changgou_service_file</module>
         <module>changgou_canal</module>
+        <module>changgou_user_oauth</module>
+
     </modules>
 
     <properties>

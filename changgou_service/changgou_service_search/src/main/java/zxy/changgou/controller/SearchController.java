@@ -1,10 +1,8 @@
 package zxy.changgou.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import zxy.changgou.service.ESManagerService;
 import zxy.changgou.service.SearchService;
 
@@ -37,6 +35,7 @@ public class SearchController {
      * @return
      */
     @GetMapping
+    @ResponseBody
     public Map search(@RequestParam Map<String, String> paramMap) throws Exception {
         //特殊符号处理
         handlerSearchMap(paramMap);
@@ -48,4 +47,17 @@ public class SearchController {
     //入参：Map
     //返回值 Map
     //由于页面是thymeleaf 完成的 属于服务器内页面渲染 跳转页面
+    @GetMapping("/list")
+    public String search(@RequestParam Map<String, String> searchMap, Model model) throws Exception {
+
+        //特殊符号处理
+        handlerSearchMap(searchMap);
+
+        //执行查询返回值
+        Map<String, Object> resultMap = searchService.search(searchMap);
+
+        model.addAttribute("searchMap", searchMap);
+        model.addAttribute("result", resultMap);
+        return "search";
+    }
 }

@@ -29,7 +29,7 @@ auth:
   ttl: 3600  #token存储到redis的过期时间
   clientId: changgou
   clientSecret: changgou
-  cookieDomain: 192.168.1.11
+  cookieDomain: localhost
   cookieMaxAge: -1
 encrypt:
   key-store:

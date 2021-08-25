@@ -1,5 +1,6 @@
 package zxy.changgou.config;
 
+import zxy.changgou.user.feign.UserFeign;
 import zxy.changgou.util.UserJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -9,7 +10,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
@@ -24,8 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     ClientDetailsService clientDetailsService;
 
-    /*@Autowired
-    private UserFeign userFeign;*/
+    @Autowired
+    private UserFeign userFeign;
 
     /****
      * 自定义授权认证
@@ -55,12 +55,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //根据用户名查询用户信息
-        String pwd = new BCryptPasswordEncoder().encode("changgou");
-        //com.changgou.user.pojo.User user = userFeign.findUserInfo(username);
+//        String pwd = new BCryptPasswordEncoder().encode("changgou");
+        zxy.changgou.user.pojo.User user = userFeign.findUserInfo(username);
         //创建User对象
         String permissions = "salesman,accountant,user";
         //UserJwt userDetails = new UserJwt(username,user.getPassword(),AuthorityUtils.commaSeparatedStringToAuthorityList(permissions));
-        UserJwt userDetails = new UserJwt(username,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList(permissions));
+        UserJwt userDetails = new UserJwt(username,user.getPassword(),AuthorityUtils.commaSeparatedStringToAuthorityList(permissions));
         return userDetails;
     }
 }

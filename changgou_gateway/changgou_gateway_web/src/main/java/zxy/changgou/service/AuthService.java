@@ -6,31 +6,26 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class AuthService {
+
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    /**
-     * 判断cookie中jti是否存在
-     * @param request
-     * @return
-     */
+    //从cookie中获取jti的值（redis中的键）
     public String getJtiFromCookie(ServerHttpRequest request) {
-        HttpCookie cookie = request.getCookies().getFirst("uid");
-        if (cookie!=null){
-            return cookie.getValue();
+        HttpCookie httpCookie = request.getCookies().getFirst("uid");
+        if (httpCookie != null){
+            String jti = httpCookie.getValue();
+            return jti;
         }
         return null;
     }
 
-    /**
-     * 判断Redis中令牌是否过期
-     * @param jti
-     * @return
-     */
-    public String getTokenFromRedis(String jti){
-        String token = stringRedisTemplate.boundValueOps(jti).get();
-        return token;
+    //从redis中获取jwt
+    public String getJwtFromRedis(String jti) {
+        String jwt = stringRedisTemplate.boundValueOps(jti).get();
+        return jwt;
     }
 }

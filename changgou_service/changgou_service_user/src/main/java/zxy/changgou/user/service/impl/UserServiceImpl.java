@@ -1,5 +1,6 @@
 package zxy.changgou.user.service.impl;
 
+import com.changgou.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zxy.changgou.user.dao.UserMapper;
@@ -30,5 +31,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserInfo(String username) {
         return userMapper.selectByPrimaryKey(username);
+    }
+
+    /**
+     * 根据删除用户
+     * @param id
+     */
+    @Override
+    public void delete(String id) {
+        userMapper.selectByPrimaryKey(id);
     }
 }

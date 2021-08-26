@@ -1,5 +1,6 @@
 package zxy.changgou.user.service;
 
+import com.changgou.entity.Result;
 import zxy.changgou.user.pojo.User;
 
 import java.util.List;
@@ -17,4 +18,10 @@ public interface UserService {
      * @return
      */
     User findUserInfo(String username);
+
+    /**
+     * 根据删除用户
+     * @param id
+     */
+    void delete (String id);
 }

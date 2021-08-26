@@ -179,7 +179,7 @@
 				axios.post("http://localhost:8001/api/oauth/login?username="+app.username+"&password="+app.password).then(function (response) {
 					if(response.data.flag){
 					    app.msg="登录成功";
-					    // location.href=app.from;
+                        location.href=app.from;
 					}else{
 					    app.msg="登录失败";
 					}

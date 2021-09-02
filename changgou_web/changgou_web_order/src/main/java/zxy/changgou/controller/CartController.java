@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import zxy.changgou.feign.CartFeign;
+import zxy.changgou.user.feign.AddressFeign;
 
 import java.util.Map;
 
@@ -29,6 +30,13 @@ public class CartController {
         model.addAttribute("items",map);
         return "cart";
     }
+
+    /**
+     * 添加购物车
+     * @param id
+     * @param num
+     * @return
+     */
     @GetMapping("/add")
     @ResponseBody
     public Result<Map> add(String id, Integer num){
@@ -38,4 +46,5 @@ public class CartController {
         Map map = cartFeign.list();
         return new Result<>(true, StatusCode.OK,"添加购物车成功",map);
     }
+
 }

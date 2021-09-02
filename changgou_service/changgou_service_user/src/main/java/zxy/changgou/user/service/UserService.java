@@ -1,6 +1,6 @@
 package zxy.changgou.user.service;
 
-import com.changgou.entity.Result;
+import zxy.changgou.pojo.Task;
 import zxy.changgou.user.pojo.User;
 
 import java.util.List;
@@ -24,4 +24,5 @@ public interface UserService {
      * @param id
      */
     void delete (String id);
+    int updateUserPoint(Task task);
 }

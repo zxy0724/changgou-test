@@ -66,7 +66,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.authorizeRequests()
                 //下面的路径放行
                 .antMatchers(
-                        "/user/add","/user/load/**","/user"
+                        "/user/add","/user/load/**","/user","/address/**"
                 ).//配置地址放行
                 permitAll()
                 .anyRequest().

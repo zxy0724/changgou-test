@@ -19,14 +19,16 @@ import java.util.Map;
 public class SkuController {
     @Autowired
     private SkuService skuService;
+
     /**
      * 查询全部数据
+     *
      * @return
      */
     @GetMapping
-    public Result findAll(){
+    public Result findAll() {
         List<Sku> skuList = skuService.findAll();
-        return new Result(true, StatusCode.OK,"查询成功",skuList) ;
+        return new Result(true, StatusCode.OK, "查询成功", skuList);
     }
 
     /***
@@ -35,9 +37,9 @@ public class SkuController {
      * @return
      */
     @GetMapping("/{id}")
-    public Result findById(@PathVariable String id){
+    public Result findById(@PathVariable String id) {
         Sku sku = skuService.findById(id);
-        return new Result(true,StatusCode.OK,"查询成功",sku);
+        return new Result(true, StatusCode.OK, "查询成功", sku);
     }
 
 
@@ -47,9 +49,9 @@ public class SkuController {
      * @return
      */
     @PostMapping
-    public Result add(@RequestBody Sku sku){
+    public Result add(@RequestBody Sku sku) {
         skuService.add(sku);
-        return new Result(true,StatusCode.OK,"添加成功");
+        return new Result(true, StatusCode.OK, "添加成功");
     }
 
 
@@ -59,11 +61,11 @@ public class SkuController {
      * @param id
      * @return
      */
-    @PutMapping(value="/{id}")
-    public Result update(@RequestBody Sku sku,@PathVariable String id){
+    @PutMapping(value = "/{id}")
+    public Result update(@RequestBody Sku sku, @PathVariable String id) {
         sku.setId(id);
         skuService.update(sku);
-        return new Result(true,StatusCode.OK,"修改成功");
+        return new Result(true, StatusCode.OK, "修改成功");
     }
 
 
@@ -72,10 +74,10 @@ public class SkuController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}" )
-    public Result delete(@PathVariable String id){
+    @DeleteMapping(value = "/{id}")
+    public Result delete(@PathVariable String id) {
         skuService.delete(id);
-        return new Result(true,StatusCode.OK,"删除成功");
+        return new Result(true, StatusCode.OK, "删除成功");
     }
 
     /***
@@ -83,10 +85,22 @@ public class SkuController {
      * @param searchMap
      * @return
      */
-    @GetMapping(value = "/search" )
-    public Result findList(@RequestParam Map searchMap){
+    @GetMapping(value = "/search")
+    public Result findList(@RequestParam Map searchMap) {
         List<Sku> list = skuService.findList(searchMap);
-        return new Result(true,StatusCode.OK,"查询成功",list);
+        return new Result(true, StatusCode.OK, "查询成功", list);
+    }
+
+    /***
+     * 库存递减
+     * @param username
+     * @return
+     */
+    @PostMapping(value = "/decr/count")
+    public Result decrCount(@RequestParam("username") String username) {
+        //库存递减
+        skuService.decrCount(username);
+        return new Result(true, StatusCode.OK, "库存递减成功！");
     }
 
 
@@ -97,28 +111,30 @@ public class SkuController {
      * @param size
      * @return
      */
-    @GetMapping(value = "/search/{page}/{size}" )
-    public Result findPage(@RequestParam Map searchMap, @PathVariable  int page, @PathVariable  int size){
+    @GetMapping(value = "/search/{page}/{size}")
+    public Result findPage(@RequestParam Map searchMap, @PathVariable int page, @PathVariable int size) {
         Page<Sku> pageList = skuService.findPage(searchMap, page, size);
-        PageResult pageResult=new PageResult(pageList.getTotal(),pageList.getResult());
-        return new Result(true, StatusCode.OK,"查询成功",pageResult);
+        PageResult pageResult = new PageResult(pageList.getTotal(), pageList.getResult());
+        return new Result(true, StatusCode.OK, "查询成功", pageResult);
     }
-    @GetMapping("/spu/{spuId}")
-    public List<Sku> findSkuListBySpuId(@PathVariable("spuId") String spuId){
-        Map<String,Object> searchMap = new HashMap<>();
 
-        if (!"all".equals(spuId)){
-            searchMap.put("spuId",spuId);
+    @GetMapping("/spu/{spuId}")
+    public List<Sku> findSkuListBySpuId(@PathVariable("spuId") String spuId) {
+        Map<String, Object> searchMap = new HashMap<>();
+
+        if (!"all".equals(spuId)) {
+            searchMap.put("spuId", spuId);
         }
         //设置审核状态为1（审核通过）
-        searchMap.put("status","1");
+        searchMap.put("status", "1");
         List<Sku> skuList = skuService.findList(searchMap);
 
         return skuList;
     }
+
     @RequestMapping("/resumeStockNum")
-    public Result resumeStockNum(@RequestParam("skuId") String skuId,@RequestParam("num")Integer num){
-        skuService.resumeStockNum(skuId,num);
-        return new Result(true,StatusCode.OK,"回滚库存成功");
+    public Result resumeStockNum(@RequestParam("skuId") String skuId, @RequestParam("num") Integer num) {
+        skuService.resumeStockNum(skuId, num);
+        return new Result(true, StatusCode.OK, "回滚库存成功");
     }
 }

@@ -17,7 +17,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>zxy.yuanlian</groupId>
+            <artifactId>changgou_service_user_api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>zxy.yuanlian</groupId>
             <artifactId>changgou_service_order_api</artifactId>

@@ -16,39 +16,42 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
     /**
      * 查询当前用户信息
+     *
      * @return
      */
     @GetMapping("/getAll")
     @ResponseBody
-    public Result getAll(){
+    public Result getAll() {
         List<User> userList = userService.getAll();
-        return new Result(true,StatusCode.OK,"查询成功",userList);
+        return new Result(true, StatusCode.OK, "查询成功", userList);
     }
-    @PreAuthorize("hasAnyAuthority('admin')")
+
     @GetMapping
-    public Result getUser(){
+    public Result getUser() {
         List<User> userList = userService.getAll();
-        return new Result(true,StatusCode.OK,"查询成功",userList);
+        return new Result(true, StatusCode.OK, "查询成功", userList);
     }
 
     @GetMapping("/load/{username}")
-    public User findUserInfo(@PathVariable("username") String username){
+    public User findUserInfo(@PathVariable("username") String username) {
         User user = userService.findUserInfo(username);
         return user;
     }
 
     /**
      * 根据删除用户
+     *
      * @param id
      * @return
      */
     //权限控制，只有admin才能使用刚方法
     @PreAuthorize("hasAnyAuthority('admin')")
     @DeleteMapping(value = "/{id}")
-    public Result delete(@PathVariable String id){
+    public Result delete(@PathVariable String id) {
         userService.delete(id);
-        return new Result(true,StatusCode.OK,"删除成功");
+        return new Result(true, StatusCode.OK, "删除成功");
     }
 }

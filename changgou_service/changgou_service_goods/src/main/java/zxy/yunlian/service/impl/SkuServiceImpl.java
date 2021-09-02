@@ -1,5 +1,7 @@
 package zxy.yunlian.service.impl;
 
+import org.springframework.data.redis.core.RedisTemplate;
+import zxy.changgou.pojo.OrderItem;
 import zxy.yunlian.dao.SkuMapper;
 import zxy.yunlian.service.SkuService;
 import zxy.yunlian.pojo.Sku;
@@ -20,9 +22,12 @@ public class SkuServiceImpl implements SkuService {
 
     @Autowired
     private SkuMapper skuMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 查询全部列表
+     *
      * @return
      */
     @Override
@@ -32,164 +37,191 @@ public class SkuServiceImpl implements SkuService {
 
     /**
      * 根据ID查询
+     *
      * @param id
      * @return
      */
     @Override
-    public Sku findById(String id){
-        return  skuMapper.selectByPrimaryKey(id);
+    public Sku findById(String id) {
+        return skuMapper.selectByPrimaryKey(id);
     }
 
 
     /**
      * 增加
+     *
      * @param sku
      */
     @Override
-    public void add(Sku sku){
+    public void add(Sku sku) {
         skuMapper.insert(sku);
     }
 
 
     /**
      * 修改
+     *
      * @param sku
      */
     @Override
-    public void update(Sku sku){
+    public void update(Sku sku) {
         skuMapper.updateByPrimaryKey(sku);
     }
 
     /**
      * 删除
+     *
      * @param id
      */
     @Override
-    public void delete(String id){
+    public void delete(String id) {
         skuMapper.deleteByPrimaryKey(id);
     }
 
 
     /**
      * 条件查询
+     *
      * @param searchMap
      * @return
      */
     @Override
-    public List<Sku> findList(Map<String, Object> searchMap){
+    public List<Sku> findList(Map<String, Object> searchMap) {
         Example example = createExample(searchMap);
         return skuMapper.selectByExample(example);
     }
 
     /**
      * 分页查询
+     *
      * @param page
      * @param size
      * @return
      */
     @Override
-    public Page<Sku> findPage(int page, int size){
-        PageHelper.startPage(page,size);
-        return (Page<Sku>)skuMapper.selectAll();
+    public Page<Sku> findPage(int page, int size) {
+        PageHelper.startPage(page, size);
+        return (Page<Sku>) skuMapper.selectAll();
     }
 
     /**
      * 条件+分页查询
+     *
      * @param searchMap 查询条件
-     * @param page 页码
-     * @param size 页大小
+     * @param page      页码
+     * @param size      页大小
      * @return 分页结果
      */
     @Override
-    public Page<Sku> findPage(Map<String,Object> searchMap, int page, int size){
-        PageHelper.startPage(page,size);
+    public Page<Sku> findPage(Map<String, Object> searchMap, int page, int size) {
+        PageHelper.startPage(page, size);
         Example example = createExample(searchMap);
-        return (Page<Sku>)skuMapper.selectByExample(example);
+        return (Page<Sku>) skuMapper.selectByExample(example);
     }
 
     @Override
     @Transactional
     public void resumeStockNum(String skuId, Integer num) {
-        skuMapper.resumeStockNum(skuId,num);
+        skuMapper.resumeStockNum(skuId, num);
+    }
+
+    /***
+     * 库存递减
+     * @param username
+     */
+    @Override
+    @Transactional
+    public void decrCount(String username) {
+        //获取购物车数据
+        List<OrderItem> orderItems = redisTemplate.boundHashOps("Cart_" + username).values();
+        //循环递减
+        for (OrderItem orderItem : orderItems) {
+            //递减库存
+            int count = skuMapper.decrCount(orderItem);
+            if (count <= 0) {
+                throw new RuntimeException("库存不足，递减失败！");
+            }
+        }
     }
 
     /**
      * 构建查询对象
+     *
      * @param searchMap
      * @return
      */
-    private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(Sku.class);
+    private Example createExample(Map<String, Object> searchMap) {
+        Example example = new Example(Sku.class);
         Example.Criteria criteria = example.createCriteria();
-        if(searchMap!=null){
+        if (searchMap != null) {
             // 商品id
-            if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
+            if (searchMap.get("id") != null && !"".equals(searchMap.get("id"))) {
                 criteria.andEqualTo("id", searchMap.get("id"));
-           	}
+            }
             // 商品条码
-            if(searchMap.get("sn")!=null && !"".equals(searchMap.get("sn"))){
-                criteria.andEqualTo("sn",searchMap.get("sn"));
-           	}
+            if (searchMap.get("sn") != null && !"".equals(searchMap.get("sn"))) {
+                criteria.andEqualTo("sn", searchMap.get("sn"));
+            }
             // SKU名称
-            if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){
-                criteria.andLike("name","%"+searchMap.get("name")+"%");
-           	}
+            if (searchMap.get("name") != null && !"".equals(searchMap.get("name"))) {
+                criteria.andLike("name", "%" + searchMap.get("name") + "%");
+            }
             // 商品图片
-            if(searchMap.get("image")!=null && !"".equals(searchMap.get("image"))){
-                criteria.andLike("image","%"+searchMap.get("image")+"%");
-           	}
+            if (searchMap.get("image") != null && !"".equals(searchMap.get("image"))) {
+                criteria.andLike("image", "%" + searchMap.get("image") + "%");
+            }
             // 商品图片列表
-            if(searchMap.get("images")!=null && !"".equals(searchMap.get("images"))){
-                criteria.andLike("images","%"+searchMap.get("images")+"%");
-           	}
+            if (searchMap.get("images") != null && !"".equals(searchMap.get("images"))) {
+                criteria.andLike("images", "%" + searchMap.get("images") + "%");
+            }
             // SPUID
-            if(searchMap.get("spuId")!=null && !"".equals(searchMap.get("spuId"))){
-                criteria.andEqualTo("spuId",searchMap.get("spuId"));
-           	}
+            if (searchMap.get("spuId") != null && !"".equals(searchMap.get("spuId"))) {
+                criteria.andEqualTo("spuId", searchMap.get("spuId"));
+            }
             // 类目名称
-            if(searchMap.get("categoryName")!=null && !"".equals(searchMap.get("categoryName"))){
-                criteria.andLike("categoryName","%"+searchMap.get("categoryName")+"%");
-           	}
+            if (searchMap.get("categoryName") != null && !"".equals(searchMap.get("categoryName"))) {
+                criteria.andLike("categoryName", "%" + searchMap.get("categoryName") + "%");
+            }
             // 品牌名称
-            if(searchMap.get("brandName")!=null && !"".equals(searchMap.get("brandName"))){
-                criteria.andLike("brandName","%"+searchMap.get("brandName")+"%");
-           	}
+            if (searchMap.get("brandName") != null && !"".equals(searchMap.get("brandName"))) {
+                criteria.andLike("brandName", "%" + searchMap.get("brandName") + "%");
+            }
             // 规格
-            if(searchMap.get("spec")!=null && !"".equals(searchMap.get("spec"))){
-                criteria.andLike("spec","%"+searchMap.get("spec")+"%");
-           	}
+            if (searchMap.get("spec") != null && !"".equals(searchMap.get("spec"))) {
+                criteria.andLike("spec", "%" + searchMap.get("spec") + "%");
+            }
             // 商品状态 1-正常，2-下架，3-删除
-            if(searchMap.get("status")!=null && !"".equals(searchMap.get("status"))){
+            if (searchMap.get("status") != null && !"".equals(searchMap.get("status"))) {
                 criteria.andEqualTo("status", searchMap.get("status"));
-           	}
+            }
 
             // 价格（分）
-            if(searchMap.get("price")!=null ){
-                criteria.andEqualTo("price",searchMap.get("price"));
+            if (searchMap.get("price") != null) {
+                criteria.andEqualTo("price", searchMap.get("price"));
             }
             // 库存数量
-            if(searchMap.get("num")!=null ){
-                criteria.andEqualTo("num",searchMap.get("num"));
+            if (searchMap.get("num") != null) {
+                criteria.andEqualTo("num", searchMap.get("num"));
             }
             // 库存预警数量
-            if(searchMap.get("alertNum")!=null ){
-                criteria.andEqualTo("alertNum",searchMap.get("alertNum"));
+            if (searchMap.get("alertNum") != null) {
+                criteria.andEqualTo("alertNum", searchMap.get("alertNum"));
             }
             // 重量（克）
-            if(searchMap.get("weight")!=null ){
-                criteria.andEqualTo("weight",searchMap.get("weight"));
+            if (searchMap.get("weight") != null) {
+                criteria.andEqualTo("weight", searchMap.get("weight"));
             }
             // 类目ID
-            if(searchMap.get("categoryId")!=null ){
-                criteria.andEqualTo("categoryId",searchMap.get("categoryId"));
+            if (searchMap.get("categoryId") != null) {
+                criteria.andEqualTo("categoryId", searchMap.get("categoryId"));
             }
             // 销量
-            if(searchMap.get("saleNum")!=null ){
-                criteria.andEqualTo("saleNum",searchMap.get("saleNum"));
+            if (searchMap.get("saleNum") != null) {
+                criteria.andEqualTo("saleNum", searchMap.get("saleNum"));
             }
             // 评论数
-            if(searchMap.get("commentNum")!=null ){
-                criteria.andEqualTo("commentNum",searchMap.get("commentNum"));
+            if (searchMap.get("commentNum") != null) {
+                criteria.andEqualTo("commentNum", searchMap.get("commentNum"));
             }
 
         }

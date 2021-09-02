@@ -10,8 +10,14 @@ import zxy.changgou.pojo.Order;
 
 @FeignClient(name="order")
 public interface OrderFeign {
+    /**
+     * 提交订单数据
+     * @param order
+     * @return
+     */
     @PostMapping("/order")
     public Result add(@RequestBody Order order);
     @GetMapping("/order/{id}")
     public Result<Order> findById(@PathVariable("id") String orderId);
+
 }

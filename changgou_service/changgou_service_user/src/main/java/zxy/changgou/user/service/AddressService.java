@@ -1,52 +1,50 @@
-package zxy.yunlian.service;
+package zxy.changgou.user.service;
 
-import zxy.yunlian.pojo.Sku;
+import zxy.changgou.user.pojo.Address;
 import com.github.pagehelper.Page;
-
 
 import java.util.List;
 import java.util.Map;
 
-public interface SkuService {
+public interface AddressService {
 
     /***
      * 查询所有
      * @return
      */
-    List<Sku> findAll();
+    List<Address> findAll();
 
     /**
      * 根据ID查询
-     *
      * @param id
      * @return
      */
-    Sku findById(String id);
+    Address findById(Integer id);
 
     /***
      * 新增
-     * @param sku
+     * @param address
      */
-    void add(Sku sku);
+    void add(Address address);
 
     /***
      * 修改
-     * @param sku
+     * @param address
      */
-    void update(Sku sku);
+    void update(Address address);
 
     /***
      * 删除
      * @param id
      */
-    void delete(String id);
+    void delete(Integer id);
 
     /***
      * 多条件搜索
      * @param searchMap
      * @return
      */
-    List<Sku> findList(Map<String, Object> searchMap);
+    List<Address> findList(Map<String, Object> searchMap);
 
     /***
      * 分页查询
@@ -54,7 +52,7 @@ public interface SkuService {
      * @param size
      * @return
      */
-    Page<Sku> findPage(int page, int size);
+    Page<Address> findPage(int page, int size);
 
     /***
      * 多条件分页查询
@@ -63,16 +61,14 @@ public interface SkuService {
      * @param size
      * @return
      */
-    Page<Sku> findPage(Map<String, Object> searchMap, int page, int size);
-
-
-    //回滚库存(增加库存并扣减销量)
-    void resumeStockNum(String skuId, Integer num);
+    Page<Address> findPage(Map<String, Object> searchMap, int page, int size);
 
     /***
-     * 库存递减
+     * 收件地址查询
      * @param username
+     * @return
      */
-    void decrCount(String username);
+    List<Address> list(String username);
+
 
 }

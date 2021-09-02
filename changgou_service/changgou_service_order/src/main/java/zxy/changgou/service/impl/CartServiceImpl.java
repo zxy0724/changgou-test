@@ -69,18 +69,20 @@ public class CartServiceImpl implements CartService {
     @Override
     public Map list(String username) {
         Map map = new HashMap();
+
         List<OrderItem> orderItemList = redisTemplate.boundHashOps(CART + username).values();
         map.put("orderItemList",orderItemList);
 
-        //商品数量与总价格
-        Integer totalNum=0;
-        Integer totalPrice=0;
+        //商品的总数量与总价格
+        Integer totalNum = 0;
+        Integer totalMoney = 0;
+
         for (OrderItem orderItem : orderItemList) {
             totalNum+=orderItem.getNum();
-            totalPrice+=orderItem.getPrice();
+            totalMoney+=orderItem.getMoney();
         }
         map.put("totalNum",totalNum);
-        map.put("totalPrice",totalPrice);
+        map.put("totalMoney",totalMoney);
 
         return map;
     }

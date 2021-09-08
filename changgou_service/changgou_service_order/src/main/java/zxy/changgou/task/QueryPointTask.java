@@ -21,7 +21,7 @@ public class QueryPointTask {
 
     //cron expression : 秒 分 时 日 月 星期几  年(年可以不用写)
     //每两秒执行一次
-    @Scheduled(cron = "0/2****?")
+    @Scheduled(cron ="0/2 * * * * ?")
     public void queryTask() {
         //1.获取小于系统当前时间的数据
         List<Task> taskList = taskMapper.findTaskLessThanCurrentTime(new Date());

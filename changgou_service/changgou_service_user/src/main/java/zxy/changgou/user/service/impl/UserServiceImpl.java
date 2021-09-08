@@ -1,7 +1,6 @@
 package zxy.changgou.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.changgou.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -72,18 +71,19 @@ public class UserServiceImpl implements UserService {
             return 0;
         }
         //3.将任务存入到redis中
-        redisTemplate.boundValueOps(task.getId()).set("exist",30, TimeUnit.SECONDS);
+        redisTemplate.boundValueOps(task.getId()).set("exist", 30, TimeUnit.SECONDS);
         //4.修改用户积分
         int result = userMapper.updateUserPoint(username, point);
         if (result <= 0) {
             return 0;
         }
         //5.记录积分日志信息
-        PointLog pointLog1 = new PointLog();
-        pointLog1.setUserId(orderId);
-        pointLog1.setPoint(point);
-        int i = pointLogMapper.insertSelective(pointLog1);
-        if (i <= 0) {
+        pointLog = new PointLog();
+        pointLog.setUserId(username);
+        pointLog.setOrderId(orderId);
+        pointLog.setPoint(point);
+        result = pointLogMapper.insertSelective(pointLog);
+        if (result <= 0) {
             return 0;
         }
         //6.删除redis中的任务信息

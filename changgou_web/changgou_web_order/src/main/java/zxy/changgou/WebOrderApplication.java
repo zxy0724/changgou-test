@@ -1,6 +1,5 @@
 package zxy.changgou;
 
-import com.changgou.entity.Result;
 import com.changgou.intercepter.FeignInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients(basePackages = {"zxy.changgou.feign", "zxy.changgou.user.feign"})
+@EnableFeignClients(basePackages = {"zxy.changgou.order.feign", "zxy.changgou.user.feign", "zxy.changgou.pay.feign"})
 public class WebOrderApplication {
 
     public static void main(String[] args) {

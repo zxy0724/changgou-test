@@ -38,5 +38,35 @@ public interface OrderService {
      */
     void delete(String id);
 
+    /***
+     * 修改订单状态为已支付
+     * @param orderId
+     * @param transactionId
+     */
+    void updatePayStatus(String orderId, String transactionId);
 
+    /***
+     * 关闭订单
+     * @param orderId
+     */
+    void closeOrder(String orderId);
+
+    /**
+     * 批量发货
+     *
+     * @param orders
+     */
+    void batchSend(List<Order> orders);
+
+    /***
+     * 确认收货
+     * @param orderId
+     * @param operator
+     */
+    void confirmTask(String orderId, String operator);
+
+    /***
+     * 自动确认收货
+     */
+    void autoTack();
 }

@@ -7,15 +7,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tk.mybatis.spring.annotation.MapperScan;
 import zxy.changgou.config.TokenDecode;
 
 
 @SpringBootApplication
 @EnableEurekaClient
-//@EnableScheduling//开启定时任务
+@EnableScheduling//开启定时任务
 @MapperScan(basePackages = {"zxy.changgou.dao"})
-@EnableFeignClients(basePackages = {"zxy.changgou.feign", "zxy.yunlian.feign","zxy.changgou.user.feign"})
+@EnableFeignClients(basePackages = {"zxy.changgou.order.feign", "zxy.yunlian.feign","zxy.changgou.pay.feign"})
 public class OrderApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrderApplication.class);

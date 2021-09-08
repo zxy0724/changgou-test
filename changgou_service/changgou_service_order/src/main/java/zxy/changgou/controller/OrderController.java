@@ -55,8 +55,8 @@ public class OrderController {
         String username = userMap.get("username");
         //设置购买用户
         order.setUsername(username);
-        orderService.add(order);
-        return new Result(true, StatusCode.OK, "添加成功");
+        String orderId = orderService.add(order);
+        return new Result(true, StatusCode.OK, "添加成功", orderId);
     }
 
 
@@ -85,4 +85,31 @@ public class OrderController {
         return new Result(true, StatusCode.OK, "删除成功");
     }
 
+    /***
+     * 这里需要对接第三方物流p
+     * @param orders
+     * @return
+     */
+    @PostMapping("/batchSend")
+    public Result batchSend(@RequestBody List<Order> orders) {
+        orderService.batchSend(orders);
+        return new Result(true, StatusCode.OK, "发货成功");
+    }
+
+    /***
+     * 确认收货
+     * @param orderId  订单号
+     * @param operator 操作者
+     * @return
+     */
+//    @PutMapping("/take/{orderId}/operator/{operator}")
+//    public Result confirmTask(@PathVariable String orderId, @PathVariable String operator) {
+//        orderService.confirmTask(orderId, operator);
+//        return new Result(true, StatusCode.OK, "");
+//    }
+    //手动确认收货
+    public Result confirmTask(@PathVariable String orderId,@PathVariable String operator){
+        orderService.confirmTask(orderId,operator);
+        return new Result(true,StatusCode.OK,"");
+    }
 }

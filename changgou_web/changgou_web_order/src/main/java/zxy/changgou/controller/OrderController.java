@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import zxy.changgou.feign.CartFeign;
-import zxy.changgou.feign.OrderFeign;
+import zxy.changgou.order.feign.CartFeign;
+import zxy.changgou.order.feign.OrderFeign;
 import zxy.changgou.pojo.Order;
 import zxy.changgou.pojo.OrderItem;
 import zxy.changgou.user.feign.AddressFeign;
@@ -61,6 +61,13 @@ public class OrderController {
     public Result add(@RequestBody Order order) {
         Result result = orderFeign.add(order);
         return result;
+    }
+    @GetMapping("/toPayPage")
+    public String toPayPage(String orderId,Model model){
+        Order order = orderFeign.findById(orderId).getData();
+        model.addAttribute("orderId",orderId);
+        model.addAttribute("payMoney",order.getPayMoney());
+        return "pay";
     }
 
 }
